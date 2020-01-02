@@ -19,33 +19,17 @@ arToken=""
 
 # Get WAN-IP
 
+# Blank => use built-in ip, can use "https://api.ipify.org" / "http://whatismyip.akamai.com" / "http://members.3322.org/dyndns/getip" / "http://checkip.amazonaws.com/"
+ipServer="https://api.ipify.org"
+
 arWanIp() {
 
     local hostIp
 
-    local lanIps="^$"
-
-    lanIps="$lanIps|(^10\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$)"
-    lanIps="$lanIps|(^127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$)"
-    lanIps="$lanIps|(^169\.254\.[0-9]{1,3}\.[0-9]{1,3}$)"
-    lanIps="$lanIps|(^172\.(1[6-9]|2[0-9]|3[0-1])\.[0-9]{1,3}\.[0-9]{1,3}$)"
-    lanIps="$lanIps|(^192\.168\.[0-9]{1,3}\.[0-9]{1,3}$)"
-
-    case $(uname) in
-        'Linux')
-            hostIp=$(ip -o -4 addr list | grep -Ev '\s(docker|lo)' | awk '{print $4}' | cut -d/ -f1 | grep -Ev "$lanIps")
-        ;;
-        'Darwin')
-            hostIp=$(ifconfig | grep "inet " | grep -v 127.0.0.1 | awk '{print $2}' | grep -Ev "$lanIps")
-        ;;
-    esac
-
-    if [ -z "$hostIp" ]; then
-        if type wget >/dev/null 2>&1; then
-            hostIp=$(wget --quiet --output-document=- http://members.3322.org/dyndns/getip)
-        else
-            hostIp=$(curl -s http://members.3322.org/dyndns/getip)
-        fi
+    if type wget >/dev/null 2>&1; then
+        hostIp=$(wget --quiet --output-document=- $ipServer)
+    else
+        hostIp=$(curl -s $ipServer)
     fi
 
     echo $hostIp
