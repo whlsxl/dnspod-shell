@@ -19,7 +19,7 @@ arToken=""
 
 # Get WAN-IP
 
-# Blank => use built-in ip, can use "https://api.ipify.org" / "http://whatismyip.akamai.com" / "http://members.3322.org/dyndns/getip" / "http://checkip.amazonaws.com/"
+# can use "https://api.ipify.org" / "http://whatismyip.akamai.com" / "http://members.3322.org/dyndns/getip" / "http://checkip.amazonaws.com/"
 ipServer="https://api.ipify.org"
 
 arWanIp() {
